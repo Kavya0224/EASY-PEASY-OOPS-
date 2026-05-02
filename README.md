@@ -77,6 +77,7 @@
 - Accessible within the **same class** and **derived (child) classes**
 - ❌ Not accessible outside the class
 - ✅ Used in **inheritance** — allows child classes to reuse and modify data safely
+- Example: a manager can set the salary of an employee
 
 ---
 
@@ -269,7 +270,7 @@ D object
  └── ONE shared A (virtual base)
 ```
 
-> ✅ **Solution:** Use **virtual inheritance** — ensures only one shared instance of the base class exists, regardless of how many times it is inherited.
+> ✅ **Solution:** Use **virtual inheritance** — a C++ technique to avoid multiple copies of the base class into children/derived classes. Ensures only one shared instance of the base class exists, regardless of how many times it is inherited.
 
 #### Ambiguity in Inheritance
 > Occurs when the compiler **cannot determine** which base class member to access.
@@ -318,10 +319,8 @@ D object
 
 **Operator Overloading:**
 - Provides operators with a special meaning for a particular data type
-```cpp
-// Example: '+' can concatenate strings and add integers
-// '<<' and '>>' work with both bit-shifting and I/O streams
-```
+- Example: we can use `+` for strings to concatenate and for integers to add
+- `<<` and `>>` are binary shift operators but also work with input/output streams — possible due to operator overloading
 
 ---
 
@@ -411,7 +410,8 @@ class MyClass {
 ```
 
 **2. Member Function of Another Class as Friend:**
-> Forward declaration of the class is needed.
+- We can declare a member function of another class as a friend function in C++
+- **Forward declaration** of the class is needed if we want to make a member function of another class a friend inside that class
 
 ---
 
@@ -475,7 +475,8 @@ public:
 
     A& operator=(const A& other) {
         x = other.x;
-        return *this;  // *this → dereferences the pointer → gives the actual object
+        return *this;  // this  → pointer to the current object
+                       // *this → dereferencing the pointer → gives the actual object itself
     }
 };
 ```
@@ -492,11 +493,13 @@ public:
 ---
 
 ### Copy Elision
-> A compiler optimization that **prevents unnecessary copies** by using techniques like:
+> Also known as **copy omission** — a compiler optimization that **prevents objects from being duplicated or copied**.
+>
+> The compiler prevents extra copies using:
 > - **RVO** (Return Value Optimization)
 > - **NRVO** (Named Return Value Optimization)
 >
-> Results in better time and space complexity.
+> Results in saving space and better program complexity (both time and space) — making the code more optimized.
 
 ---
 
@@ -546,12 +549,18 @@ int* p = new int(10);  // stored in heap, stays until deleted
 
 ### 2. `new` and `delete`
 
+**`new`** — Allocates memory on heap, returns pointer:
 ```cpp
-// Allocate single object
 int* p = new int(5);
-delete p;
+```
 
-// Allocate array
+**`delete`** — Frees heap memory:
+```cpp
+delete p;
+```
+
+**Arrays:**
+```cpp
 int* arr = new int[5];
 delete[] arr;  // IMPORTANT: use delete[] for arrays
 ```
@@ -675,6 +684,7 @@ p = nullptr;  // safe
 #### 3. `shared_ptr`
 - Allows **multiple pointers** to share ownership of the same object
 - Uses **reference counting** to manage memory
+- Maintains reference counting ownership in cooperation with all copies of the `shared_ptr`
 - Object is destroyed **only when all copies** of the `shared_ptr` are destroyed
 
 #### 4. `weak_ptr`
@@ -716,6 +726,9 @@ p = nullptr;  // safe
 > - **Copy** → photocopy a book 📚 (expensive)
 > - **Move** → hand over the book (cheap)
 
+### Move Concept (Simple Idea)
+> Instead of copying memory → **"Steal" the resource**
+
 ---
 
 ### lvalue vs rvalue
@@ -734,10 +747,31 @@ int &x = 10;    // ❌ ERROR
 int &&r = 10;   // ✅ rvalue reference
 ```
 
+> 👉 It can bind to **temporary objects (rvalues)**
+
 | Reference | Binds to |
 |-----------|----------|
 | `int&` | lvalues only |
 | `int&&` | rvalues only |
+
+**Real Use Case:**
+```cpp
+void process(int &&x) {
+    cout << "rvalue received\n";
+}
+
+process(10);  // calls this (rvalue)
+```
+
+**Compare with lvalue version:**
+```cpp
+void process(int &x) {
+    cout << "lvalue received\n";
+}
+
+int a = 5;
+process(a);  // lvalue version
+```
 
 ---
 
