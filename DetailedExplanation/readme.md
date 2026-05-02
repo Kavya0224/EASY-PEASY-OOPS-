@@ -15,7 +15,7 @@
 
 ---
 
-## 5. OOP over Procedure-Oriented Programming Language
+## OOP over Procedure-Oriented Programming Language
 
 ### OOP vs POP (Core Idea)
 
