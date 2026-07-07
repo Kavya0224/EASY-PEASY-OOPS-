@@ -1,197 +1,210 @@
-# 📘 Object-Oriented Programming in C++ — Complete Notes
+# OOP C++ Notes
+
+> if you create objects with `new`, you must delete them (using `delete` or calling destructor) to free memory and run cleanup code. Otherwise you risk memory leaks and unfinished resource handling.
+
+> A memory leak happens when a program allocates memory but never releases it, even after it's no longer needed. **Memory leak = used memory that is never freed**
+
+> an empty destructor = same as no destructor or default destructor. C++ not automatically delete heap memory (`new`) like it does for stack objects. (for heap we use `delete`)
 
 ---
 
-## 📌 Table of Contents
+### What is Function Hiding?
 
-- [OOP Overview](#oop-overview)
-- [Access Modifiers](#access-modifiers)
-- [Constructors & Destructors](#constructors--destructors)
-- [this Pointer](#this-pointer)
-- [Static Members](#static-members)
-- [Four Pillars of OOP](#four-pillars-of-oop)
-  - [Encapsulation](#1-encapsulation)
-  - [Abstraction](#2-abstraction)
-  - [Inheritance](#3-inheritance)
-  - [Polymorphism](#4-polymorphism)
-- [Virtual Functions](#virtual-functions)
-- [Friend Class and Function](#friend-class-and-function)
-- [Copy Constructor & Assignment Operator](#copy-constructor--assignment-operator)
-- [Shallow Copy vs Deep Copy](#shallow-copy-vs-deep-copy)
-- [Memory Management](#memory-management)
-- [Rule of 3 / 5 / 0](#rule-of-3--5--0)
-- [Smart Pointers](#smart-pointers)
-- [Move Semantics](#move-semantics)
-- [Templates](#templates-generic-programming)
-- [Exception Handling](#exception-handling)
+👉 When a derived class defines a function with the same name as in the base class.  
+👉 the base class function gets hidden, even if signatures are different.
 
 ---
 
-## OOP Overview
+## OOP over Procedure-Oriented Programming Language
 
-> **OOP (Object-Oriented Programming)** is a programming paradigm that revolves around the concept of **"OBJECTS"**.
+### OOP vs POP (Core Idea)
 
-### Why OOP?
+- **POP** (Procedure-Oriented Programming) → Focuses on functions/procedures **(POP → "How to do?")**
+- **OOP** (Object-Oriented Programming) → Focuses on objects (data + behavior together) **(OOP → "Who does it?")**
 
-- Helps users understand software without knowing actual implementation
-- Increases **readability**, **understandability**, and **maintainability**
-- Even very large software can be written and managed easily
+### Advantages
 
-### OOP vs POP
-
-| Aspect | POP (Procedure-Oriented) | OOP (Object-Oriented) |
-|--------|--------------------------|------------------------|
-| Focus  | Functions/Procedures     | Objects (data + behavior) |
-| Core Question | "How to do?" | "Who does it?" |
-
-### Advantages of OOP over POP
-
-- Reusable components via objects and classes → less duplication
-- Clear and logical structure → easier to understand, maintain, and debug
+- By using objects and classes, you can create reusable components, leading to less duplication and more efficient development.
+- It provides a clear and logical structure, making the code easier to understand, maintain, and debug.
 
 ---
+
+## OOPS
+
+> OOPs, or Object-Oriented Programming is a programming model or paradigm which revolves around the concept of **"OBJECTS"**.
+
+### What is the need for OOPs?
+
+- OOPs helps users to understand the software easily, although they don't know the actual implementation.
+- With OOPs, the readability, understandability, and maintainability of the code increase multifold.
+- Even very big software can be easily written and managed easily using OOPs.
 
 ### Class
 
-> A **class** is a user-defined blueprint from which objects are created. It represents the set of properties or methods common to all objects of one type.
+> A class is a user-defined blueprint from which objects are created. It represents the set of properties or methods that are common to all objects of one type.
 
-### Object
+### Objects
 
-> **Objects** are real-world instances of a class, containing the characteristics and behaviors specified in the class template.
+> Objects can be considered as real-world instances of entities like class, that contain some characteristics and behaviors specified in the class template.
 
 ---
 
 ## Access Modifiers
 
-> Access modifiers are special keywords in C++ that control the **visibility** of class members (data and functions).
+> Access modifiers are special keywords in C++, that control the visibility of class members (data and functions).
 
-### `public`
-- Accessible from **anywhere** in the program
-- ✅ Used to define the **interface** of a class; functions users should call
+### 1. `public`
 
-### `private`
-- Accessible **only within the same class**
-- ✅ Used for **data hiding (encapsulation)**, protecting sensitive data, preventing invalid modifications
+Members declared as public are accessible from anywhere in the program.
 
-### `protected`
-- Accessible within the **same class** and **derived (child) classes**
-- ❌ Not accessible outside the class
-- ✅ Used in **inheritance** — allows child classes to reuse and modify data safely
-- Example: a manager can set the salary of an employee
+✅ **Use Cases**
+- Used to define the interface of a class
+- Functions that users should call
+
+### 2. `private`
+
+Members declared as private are accessible only within the same class.
+
+✅ **Use Cases**
+- Data hiding (encapsulation)
+- Protect sensitive data
+- Prevent invalid modifications
+
+### 3. `protected`
+
+Members declared as protected are accessible:
+- Within the same class
+- In derived (child) classes
+- Not accessible outside
+
+> Example: manager can set the salary of employee
+
+✅ **Use Cases**
+- Used in inheritance
+- Allows child classes to reuse and modify data safely.
 
 ---
 
-## Constructors & Destructors
+## Constructors in OOP
 
-### Constructor
+> A constructor is a special member function of a class that is:
+> - Automatically called when an object is created
+> - Used to initialize data members
 
-> A **constructor** is a special member function that is automatically called when an object is created, used to initialize data members.
-
-**Key Properties:**
-- Same name as the class
+🔑 **Key properties:**
+- Same name as class
 - No return type
 - Called automatically
 
-#### Types of Constructors
+### 1. Default Constructor
+A constructor that takes no arguments.
+```
+Ex — Student()
+```
 
-| Type | Description | Example |
-|------|-------------|---------|
-| Default Constructor | Takes no arguments | `Student()` |
-| Parameterized Constructor | Accepts arguments to initialize values | `Student(int a)` |
+### 2. Parameterized Constructor
+A constructor that accepts arguments to initialize values.
+```
+Ex — Student(int a)
+```
 
-**Constructor Overloading:**
-- Multiple constructors in the same class with different parameters
-- Example of **compile-time polymorphism**
+### Constructor Overloading
+
+Having multiple constructors in the same class with different parameters.
+
+👉 It is an example of **compile-time polymorphism**
 
 ---
 
-### Destructor
+## Destructor
 
-> A **destructor** is a special member function that is automatically called when an object is destroyed, used to free resources / clean up.
+> A destructor is a special member function of a class that:
+> - Has the same name as the class, prefixed with `~`
+> - Has no return type and no parameters
+> - Is automatically called when an object is destroyed
+> - Used to free resources / clean up
 
-**Key Properties:**
-- Same name as the class, prefixed with `~`
-- No return type and no parameters
-- Called automatically when object is destroyed
+### When is Destructor Called?
 
-> ⚠️ An **empty destructor** = same as no destructor or default destructor.
-> C++ does **not** automatically delete heap memory (`new`) like it does for stack objects.
+**1. When object goes out of scope** (Stack Allocation ✅ Recommended)
 
-#### When is the Destructor Called?
-
-**1. Stack Allocation (Recommended ✅) — when object goes out of scope:**
 ```cpp
 void func() {
     Student s;  // constructor called
 }               // destructor called here
 ```
 
-**2. Heap Allocation — when `delete` is used:**
+**2. For dynamically allocated objects** (Recommended for Heap Allocation `new`/`delete`)
+
 ```cpp
 Student* s = new Student();
 delete s;  // destructor called here
 ```
 
-> 💡 If you create objects with `new`, you **must** `delete` them to free memory and run cleanup code. Otherwise you risk **memory leaks** and unfinished resource handling.
-
 ---
 
 ## `this` Pointer
 
-> `this` is a pointer that points to the **current object** of the class.
+> `this` is a pointer that points to the current object of the class.
 
 ```cpp
 this->x = x;
-// this->x  → refers to class member
-// x        → refers to parameter
 ```
+
+👉 `this->x` refers to class member  
+👉 `x` refers to parameter
 
 ---
 
 ## Static Members
 
-> **Static members** belong to the **class itself**, not to individual objects.
-> `"static"` means **shared across all objects** of a class.
+> Static members are class members (variables or functions) that belong to the class itself, not to individual objects.
+
+→ `"static"` means **shared across all objects** of a class
 
 ### Static Variables
-- Shared by **all objects**
-- Only **one copy** in memory
+
+A static variable is a class variable that:
+- Is shared by all objects
+- Has only one copy in memory
 - Belongs to the class, not individual objects
 
 ### Static Functions
-- Belongs to the **class**, not objects
-- Can be called **without creating an object**
-- Can access **only static members**
+
+A static function:
+- Belongs to the class, not objects
+- Can be called without creating object
+- Can access only static members
 
 ---
 
-### Scope Resolution Operator `::`
+## Scope Resolution Operator `::`
 
-> Used to tell the compiler **which scope** (class, function, global, namespace) you are referring to.
+> The scope resolution operator `(::)` is used to tell the compiler which scope (class, function, global, namespace) you are referring to.
 
-```
-Think of it as: "Go inside this scope and pick that specific thing."
-```
+Think of it as:
+> **"Go inside this scope and pick that specific thing."**
 
 ---
 
-## Four Pillars of OOP
+## Four Pillars of OOP in C++
 
 ---
 
 ### 1. Encapsulation
 
-> **Encapsulation** is the process of wrapping data members and member functions into a single unit (class) and restricting direct access to some of its components. It acts as a **protective shield** for the data.
+> Encapsulation is the process of wrapping up of data member and member functions into a single unit (class) and restricting direct access to some of its components. It acts as a **protective shield** for the data.
 
-#### Implementation in C++
+#### Implementation of Encapsulation in C++
 
-| Step | Description |
-|------|-------------|
-| Declare variables as `private` | Keep data members private so they cannot be accessed directly from outside |
-| Use getters and setters | Provide `public` functions to access and modify private variables safely |
-| Apply proper access specifiers | `private` for data members, `public` for controlled access functions |
+| Step | What to do | Why |
+|------|-----------|-----|
+| Declare variables as `private` | Keep the class data members private so that they cannot be accessed directly from outside the class. | This ensures data hiding. |
+| Use getters and setters | Provide public functions (getters and setters) to access and modify private variables safely. | These methods can also include validation to ensure only valid data is assigned. |
+| Apply proper access specifiers | Use `private` for data members to hide information and `public` for member functions | Provides controlled access to the data. |
 
-#### Advantages
+#### Advantages of Encapsulation
+
 - Data Hiding
 - Improved Maintainability
 - Enhanced Security
@@ -202,58 +215,70 @@ Think of it as: "Go inside this scope and pick that specific thing."
 
 ### 2. Abstraction
 
-> **Abstraction** is the process of **hiding implementation details** and showing only the essential features to the user. Focus on *what* an object does rather than *how* it does it.
+> Abstraction in C++ is the process of hiding the implementation details and only showing the essential details or features to the user. It allows to focus on **what** an object does rather than **how** it does it.
+
+Abstraction is mainly achieved using **abstract classes** and **pure virtual functions**. These define a common interface for derived classes while leaving the actual implementation to them.
 
 #### Abstract Class
-- **Cannot be instantiated** (no objects can be created directly)
-- Contains **at least one pure virtual function**
+
+An abstract class is a class that:
+- Cannot be instantiated (no objects can be created)
+- Contains at least one pure virtual function
 
 #### Full Abstraction — Interfaces
-- A class acting as an **interface** contains **only pure virtual functions** and no data members or implemented methods
-- Enforces that all derived classes must implement every function
 
-> 📝 **Note:** "A class with only virtual functions *can* be instantiated, but if it contains at least one **pure virtual function**, it becomes an abstract class and **cannot** be instantiated."
+In C++, a class can act as an interface if it contains **only pure virtual functions** and no data members or implemented methods. This enforces that all derived classes must implement every function, achieving full control abstraction.
+
+> 📝 **NOTE** → "A class with only virtual functions can be instantiated, but if it contains at least one pure virtual function, it becomes an abstract class and **cannot** be instantiated."
 
 #### Abstraction vs Encapsulation
 
 | Concept | Definition |
-|---------|------------|
-| **Encapsulation** | Wrapping data and methods together and restricting direct access using access modifiers |
-| **Abstraction** | Hiding implementation details and showing only essential features to the user |
+|---------|-----------|
+| **Encapsulation** | The process of wrapping data and methods together and restricting direct access to data using access modifiers. |
+| **Abstraction** | The process of hiding implementation details and showing only essential features to the user. |
 
 ---
 
 ### 3. Inheritance
 
-> **Inheritance** is a mechanism where a derived class acquires the properties and behaviors of a base class, forming an **"is-a"** relationship. Enables **code reusability**.
+> Inheritance is a mechanism in C++ where a class (derived) acquires the properties and behaviors of another class (base), forming an **"is-a"** relationship.  
+> Enables code reusability by inheriting data members and methods from the base class.
 
 #### Types of Inheritance
 
 | Type | Description |
 |------|-------------|
-| **Single** | A sub-class is derived from only one super class |
-| **Multiple** | One class inherits from more than one super class |
-| **Multilevel** | A class is derived from another derived class, forming a chain |
-| **Hierarchical** | More than one subclass is derived from a single base class |
-| **Hybrid** | Combination of two or more types of inheritance |
+| **Single Inheritance** | A sub-class is derived from only one super class. |
+| **Multiple Inheritance** | One class can have more than one superclass and inherit features from all parent classes. |
+| **Multilevel Inheritance** | A class is derived from another derived class, forming a chain of inheritance. |
+| **Hierarchical Inheritance** | More than one subclass is inherited from a single base class. i.e. more than one derived class is created from a single base class. |
+| **Hybrid Inheritance** | When two or more types of inheritance are combined in one program. For example, a class might use multiple inheritance and also be part of a multilevel inheritance chain. |
 
-> 📝 **Note (Multilevel):** When a derived class object is created, only one object is formed, but it contains base class subobjects. Constructors of base classes are called to initialize those parts, not to create separate objects.
+> 📝 **Note (Multilevel):** "When a derived class object is created, only one object is formed, but it contains base class subobjects. The constructors of base classes are called to initialize those parts, not to create separate objects."
 
 ---
 
 #### Diamond Problem
 
-> Hybrid inheritance can lead to the **diamond problem** — when a class inherits from two classes that both share the same base class, resulting in **multiple copies** of the base class members and **ambiguity**.
+> Hybrid Inheritance can lead to the **diamond problem** in C++. This happens when a class inherits from two classes that both share the same base class. As a result the derived class gets multiple copies of the base class members, which creates ambiguity about which one to use.
 
 ```
-        Base
-        /   \
-     Par1   Par2
-        \   /
-        Child
+                Base
+                /   \
+             par1   par2
+                \   /
+                child
 ```
 
-**Without virtual inheritance** — multiple copies of base class:
+#### Solution to Diamond Problem
+
+C++ resolves the Diamond Problem using **virtual inheritance**. Virtual inheritance ensures that only one shared instance of the base class exists, regardless of how many times it is inherited.
+
+> **virtual inheritance** → C++ technique to avoid multiple copies of the base class into children/derived class.
+
+**Without virtual inheritance** — each inheritance path creates its own copy of base class:
+
 ```
 D object
  ├── B part
@@ -262,7 +287,8 @@ D object
        └── A (copy 2)
 ```
 
-**With virtual inheritance** — single shared base class:
+**With virtual inheritance** — all paths SHARE a single base class object:
+
 ```
 D object
  ├── B part
@@ -270,202 +296,176 @@ D object
  └── ONE shared A (virtual base)
 ```
 
-> ✅ **Solution:** Use **virtual inheritance** — a C++ technique to avoid multiple copies of the base class into children/derived classes. Ensures only one shared instance of the base class exists, regardless of how many times it is inherited.
-
 #### Ambiguity in Inheritance
-> Occurs when the compiler **cannot determine** which base class member to access.
+
+> Ambiguity occurs when the compiler cannot determine which base class member to access.
 
 ---
 
-#### Advantages & Disadvantages of Inheritance
+#### Advantages of Inheritance in C++
 
-| Advantages | Disadvantages |
-|------------|---------------|
-| Code Reusability | Tight Coupling |
-| Abstraction | Reduced Flexibility |
-| Class Hierarchy | Increased Complexity |
-| Polymorphism | Diamond Problem |
-| — | Overhead of Virtual Functions |
+- Code Reusability
+- Abstraction
+- Class Hierarchy
+- Polymorphism
 
----
+#### Disadvantages of Inheritance in C++
 
-#### Function Hiding
-
-> When a derived class defines a function with the **same name** as in the base class, the base class function gets **hidden**, even if signatures are different.
+- Tight Coupling
+- Reduced Flexibility
+- Increased Complexity
+- Diamond Problem
+- Overhead of Virtual Functions
 
 ---
 
 ### 4. Polymorphism
 
-> **Polymorphism** means having many forms. A single function name or operator can work differently in different situations.
+> The word polymorphism means having many forms. In C++, polymorphism concept can be applied to functions and operators. A single function name can work differently in different situations. Similarly, an operator works different when used in different context.
 
 ```
-                           Polymorphism
-                                |
-                 --------------------------------
-                 |                              |
-           Compile-Time                     Runtime
-           /          \                        |
- Func Overloading   Operator Overloading   Func Overriding
+                       Polymorphism
+                            |
+             -------------------------------
+             |                             |
+         compile time                   runtime
+         /          \                      |
+func overloading  operator overloading  func overriding
 ```
 
 ---
 
-#### Compile-Time Polymorphism
-> Also known as **early binding** and **static polymorphism**. The compiler determines how a function or operator will work depending on the context.
+#### 1. Compile-Time Polymorphism
 
-**Function Overloading:**
-- Two or more functions can have the **same name** but behave differently for different parameters
+> In compile-time polymorphism, the compiler determines how the function or operator will work depending on the context. This type of polymorphism is achieved by function overloading or operator overloading.  
+> Also known as **early binding** and **static polymorphism**.
 
-**Operator Overloading:**
-- Provides operators with a special meaning for a particular data type
-- Example: we can use `+` for strings to concatenate and for integers to add
-- `<<` and `>>` are binary shift operators but also work with input/output streams — possible due to operator overloading
+**Function Overloading**
+> Function overloading is a feature of object-oriented programming where two or more functions can have the same name but behave differently for different parameters.
 
----
+**Operator Overloading**
+> C++ has the ability to provide the operators with a special meaning for particular data type, this ability is known as operator overloading.
 
-#### Runtime Polymorphism
-> Also known as **late binding** and **dynamic polymorphism**. The function call is resolved at **runtime**.
-> Implemented using **function overriding** with **virtual functions**.
-
-**Function Overriding:**
-- A derived class defines a member function that exists in the base class
-- The base class function must be declared as `virtual` for runtime polymorphism
+For example, we can make use of the addition operator `(+)` for string to concatenate two strings and for integer to add two integers. The `<<` and `>>` operator are binary shift operators but are also used with input and output streams. This is possible due to operator overloading.
 
 ---
 
-#### How C++ Resolves Functions at Runtime (Important ⭐)
+#### 2. Runtime Polymorphism
 
-> "In runtime polymorphism, C++ uses virtual functions to decide which function to call at runtime. Internally, the compiler creates a **vtable** (virtual table) for each class containing virtual functions. Each object has a hidden pointer called **vptr** (virtual pointer) that points to the vtable of its actual class. When we call a function using a base class pointer, the program looks at the object's `vptr` at runtime, finds the correct function in the vtable, and calls it. So even if the pointer is of type base class, the function of the actual object type is executed."
+> The function call in runtime polymorphism is resolved at runtime in contrast with compile time polymorphism, where the compiler determines which function call to bind at compilation (compile time).  
+> Also known as **late binding** and **dynamic polymorphism**.  
+> Runtime polymorphism is implemented using **function overriding** with **virtual functions**.
 
-| Concept | Description |
-|---------|-------------|
-| `vtable` | A table of function pointers, maintained **per class** |
-| `vptr` | A pointer to vtable, maintained **per object instance** |
-
-> 📝 **Note:** A derived class pointer **cannot** point to a base object because the base object doesn't contain the derived part — this would lead to unsafe memory access.
+**Function Overriding**
+> Function Overriding occurs when a derived class defines one or more member functions of the base class. That base function is said to be overridden. The base class function must be declared as virtual function for runtime polymorphism to happen.
 
 ---
 
-## Virtual Functions
+#### How C++ actually knows which function to call at runtime? `[IMP]`
 
-### Virtual Function
-> A member function declared with the `virtual` keyword in a base class and re-defined (overridden) in the derived class. Enables **runtime polymorphism** via a base class pointer or reference.
+> "In runtime polymorphism, C++ uses virtual functions to decide which function to call at runtime.  
+> Internally, the compiler creates a **vtable** (virtual table) for each class containing virtual functions.  
+> Each object has a hidden pointer called **vptr** (virtual Pointer) that points to the vtable of its actual class.  
+> When we call a function using a base class pointer, the program looks at the object's vptr at runtime, finds the correct function in the vtable, and calls it.  
+> So even if the pointer is of type base class, the function of the actual object type is executed."
 
-### Virtual Destructor
-> Deleting a derived class object using a **base class pointer** with a **non-virtual destructor** results in undefined behavior.
-
-```cpp
-// Fix: declare base class destructor as virtual
-virtual ~BaseClass();
-```
-
-> 📝 A virtual destructor does **NOT** call the derived constructor — it ensures the **derived destructor is called** when deleting through a base pointer.
-
-### Pure Virtual Function
-> A function in a base class with `= 0` and no body, which **must** be overridden in derived classes. A class with such a function is called **abstract** and cannot be instantiated.
+> 📝 **NOTE** → "A derived class pointer cannot point to a base object because the base object doesn't contain the derived part. This would lead to unsafe memory access."
 
 ---
 
-### Binding
+## Virtual Function
 
-> **Binding** decides which function gets executed based on context (type of object or function signature).
+> A virtual function is a member function that is declared within a base class using the keyword `virtual` and is re-defined (Overridden) in the derived class. Virtual functions enable runtime polymorphism, calling the correct function via a base class pointer or reference.
 
-| Type | When | Speed |
-|------|------|-------|
-| **Early Binding** | Resolved at **compile time** | Faster |
-| **Late Binding** | Resolved at **runtime** via virtual functions | Slower |
+## Virtual Destructor
+
+> Deleting a derived class object using a pointer of base class type that has a non-virtual destructor results in undefined behavior. To correct this situation, the base class should be defined with a virtual destructor.
+
+👉 A virtual destructor does **NOT** call the derived constructor.  
+It ensures the derived destructor is called when deleting through a base pointer.
+
+## Pure Virtual Function
+
+> A pure virtual function is a function in a base class with `= 0` and no body, which must be overridden in derived classes. A class with such a function is called **abstract** and cannot be instantiated.
+
+---
+
+## Binding
+
+> When a function is called in the code, binding decides which function gets executed based on the context such as the type of object or the function signature. Binding happens at two levels:
+
+- **Early Binding:** It happens when a function call is resolved during the program's compilation. This makes it faster because everything is decided early.
+- **Late Binding:** It happens with virtual functions where the exact function to call is decided at runtime, depending on the actual object type. This is slower because the program has to figure it out while running.
+
+### How does the compiler perform runtime resolution?
+
+The compiler maintains two things to serve this purpose:
+
+| | Description |
+|--|-------------|
+| **vtable** | A table of function pointers, maintained per class. |
+| **vptr** | A pointer to vtable, maintained per object instance. |
 
 ### Limitations of Virtual Functions
-- Slower execution
-- Difficult to debug
+
+- Slower
+- Difficult to Debug
 
 ---
 
 ## Friend Class and Function
 
-> `friend` allows certain functions or classes to access the **private and protected members** of another class.
-
-> ⚠️ **Friendship is not mutual.** If class A is a friend of B, then B doesn't automatically become a friend of A.
+> In C++, friend functions and friend classes are concepts that allow certain functions or classes to access the private and protected members of another class.
 
 ### Friend Class
-```cpp
-class B {
-    friend class A;  // A can access B's private members
-};
-```
+
+> A friend class can access private and protected members of other classes in which it is declared as a friend.
+
+- Remember one thing, **friendship is not mutual**. If class A is a friend of B, then B doesn't become a friend of A automatically.
+- We can declare a friend class in C++ by using the `friend` keyword.
 
 ### Friend Function
-- Not a member function of the class
-- Can access and manipulate private and protected members
-- `friend` keyword placed **only in the declaration**, not in the definition or call
 
-#### Types
+> Like friend classes, a friend function can be granted special access to private and protected members of a class in C++. They are not the member functions of the class but can access and manipulate the private and protected members of that class for they are declared as friends.
 
-**1. Global Function as Friend Function:**
-```cpp
-class MyClass {
-    friend void display(MyClass obj);  // declaration only
-};
-```
+#### 1. Global Function as Friend Function
 
-**2. Member Function of Another Class as Friend:**
-- We can declare a member function of another class as a friend function in C++
-- **Forward declaration** of the class is needed if we want to make a member function of another class a friend inside that class
+> We can declare any global function as a friend function. The keyword `"friend"` is placed only in the function declaration of the friend function and not in the function definition or call.
 
----
+#### 2. Member Function of Another Class as Friend Function
 
-### Friend — Advantages vs Disadvantages
+> We can also declare a member function of another class as a friend function in C++. Forward declaration (friend class should declare before using it as a friend) of the class is needed if we want to make a member function of another class a friend inside that class.
+
+### Advantages vs Disadvantages
 
 | Advantages | Disadvantages |
-|------------|---------------|
-| Access private/protected members without inheritance | Violates data hiding by exposing private members |
-| Can be declared in any access section | Breaks encapsulation when overused |
-| Useful for operator overloading | Does not support runtime polymorphism |
-| — | Friendship is not inherited by derived classes |
+|-----------|---------------|
+| Access private and protected members without inheritance | Violates data hiding by exposing private members |
+| Can be declared in any access section of a class | Breaks encapsulation when overused |
+| Useful for operator overloading flexibility | Do not support runtime polymorphism |
+| | Friendship is not inherited by derived classes |
 
 ---
 
-## Copy Constructor & Assignment Operator
+## Copy Assignment Operator
 
-### Copy Constructor
-> A special constructor used to create a **new object** using an existing object of the same class.
-
-#### Default Copy Constructor
-- Created by compiler if no user-defined constructor exists
-- Performs **shallow copy**
-- Works well for basic types, but **not for dynamically allocated memory**
-- Can lead to **dangling pointer** problems
-
-#### User-Defined Copy Constructor
-- Needed when a class has pointers or runtime resources (dynamic memory)
-- Performs **deep copy**
-
-```cpp
-// Without a custom copy constructor, shallow copy can lead to
-// dangling pointers or resource conflicts
-```
-
-#### Need for User-Defined Copy Constructor
-- Default → shallow copy → copies pointer values, not actual resources
-- Without custom copy constructor → deletion of one object might cause deletion of another object's members
-
----
-
-### Copy Assignment Operator
-> Used to **assign one existing object to another**.
+> Used to assign one existing object to another
 
 ```cpp
 ClassName& operator=(const ClassName& other);
 ```
 
+✔ **When it is called:**
+
 ```cpp
 A obj1(10);
 A obj2(20);
-obj2 = obj1;   // assignment operator called
+
+obj2 = obj1;   // assignment operator
 ```
 
 **Example:**
+
 ```cpp
 class A {
 public:
@@ -475,143 +475,195 @@ public:
 
     A& operator=(const A& other) {
         x = other.x;
-        return *this;  // this  → pointer to the current object
-                       // *this → dereferencing the pointer → gives the actual object itself
+        return *this;             // this is a pointer to the current object
+                                  // Dereferencing the pointer
+                                  // Gives the actual object itself
     }
 };
 ```
 
 ---
 
-### Copy Constructor vs Assignment Operator
+## Shallow Copy
 
-| Aspect | Copy Constructor | Assignment Operator |
-|--------|-----------------|---------------------|
-| Purpose | Creates a **new object** | Reuses an **existing object** |
-| Memory | Allocates new memory | May reuse or reallocate memory |
+> In shallow copy, all variable values are copied, but **dynamically allocated memory addresses are shared** between objects.  
+> Both objects point to the same heap memory, so changes made through one object affect the other.
 
----
+## Deep Copy
 
-### Copy Elision
-> Also known as **copy omission** — a compiler optimization that **prevents objects from being duplicated or copied**.
->
-> The compiler prevents extra copies using:
-> - **RVO** (Return Value Optimization)
-> - **NRVO** (Named Return Value Optimization)
->
-> Results in saving space and better program complexity (both time and space) — making the code more optimized.
+> In deep copy, a new object is created by copying all variable values and allocating **separate memory** for dynamically allocated variables.  
+> Both the original and copied objects store their data in different memory locations.  
+> Changes made to one object do not affect the other because a custom copy constructor is used.
 
 ---
 
-## Shallow Copy vs Deep Copy
+## Copy Constructor
 
-### Shallow Copy
-- All variable values are copied, but **dynamically allocated memory addresses are shared**
-- Both objects point to the **same heap memory**
-- Changes through one object **affect the other**
+> A copy constructor is a special type of constructor used to create a new object using an existing object of the same class.
 
-### Deep Copy
-- A **new object** is created with **separate memory allocation**
-- Original and copied objects store data in **different memory locations**
-- Changes to one object do **not affect** the other
-- Requires a **custom copy constructor**
+### Default Copy Constructor
 
----
+> Compiler creates a default copy constructor if there is no user defined constructor. This compiler created constructor does a **shallow copy** and works well for basic types, but does not work for dynamic allocated memory.
+
+→ Default copy constructor (shallow copy) can lead to **dangling pointer** problems, especially when your class owns dynamic memory.
+
+### User Defined Copy Constructor
+
+> C++ also allows programmers to create their own version of copy constructor known as **user defined** or **explicit copy constructor**.
+
+→ If a class has pointers or runtime resources (like dynamic memory), a custom copy constructor is needed. Otherwise, deletion of one object might cause deletion of an unrelated object members.
+
+### Need of User Defined Copy Constructor
+
+- If no copy constructor is defined, C++ provides a default copy constructor.
+- The default copy constructor performs a shallow copy — shallow copy copies pointer values, not the actual resources they point to.
+- Without a custom copy constructor, shallow copy can lead to dangling pointers or resource conflicts.
 
 ### Dangling Pointer
-> A pointer pointing to a **memory location that has been deleted (or freed)** is called a dangling pointer. Leads to unexpected behavior.
+
+> A pointer pointing to a memory location that has been deleted (or freed) is called a **dangling pointer**. Such a situation can lead to unexpected behavior in the program.
+
+### Copy Elision
+
+> Copy elision (also known as **copy omission**) is a compiler optimization method that prevents objects from being duplicated or copied.
+
+→ In copy elision, the compiler prevents the making of extra copies by making the use to techniques such as **NRVO** (Named Return Value Optimization) and **RVO** (Return Value Optimization) which results in saving space and better the program complexity (both time and space); Hence making the code more optimized.
+
+### Copy Constructor vs Assignment Operator
+
+> **Key Idea:**
+
+- ✔ Copy constructor → creates **new object** (new memory)
+- ✔ Assignment operator → reuses **existing object** (may reuse or reallocate memory depending on implementation)
 
 ---
 
 ## Memory Management
 
+---
+
 ### 1. Stack vs Heap
 
-| Feature | Stack | Heap |
-|---------|-------|------|
-| Management | Automatic | Manual |
-| Speed | Fast | Slower |
-| Size | Limited | Large |
-| Lifetime | Ends when function ends | Until you `delete` it |
-| Stores | Local variables, function calls | Dynamic allocations |
+#### 🧠 Stack Memory
+
+- Automatically managed
+- Stores:
+  - Local variables
+  - Function calls
+- Fast access
+- Limited size
+- Lifetime: ends when function ends
 
 ```cpp
-// Stack
 void func() {
-    int x = 10;  // stored in stack, destroyed automatically
+    int x = 10; // stored in stack
 }
-
-// Heap
-int* p = new int(10);  // stored in heap, stays until deleted
 ```
+
+👉 `x` is destroyed automatically after `func()` ends.
+
+---
+
+#### 🧠 Heap Memory
+
+- Manually managed
+- Used for dynamic allocation
+- Slower than stack
+- Large memory available
+- Lifetime: until you delete it
+
+```cpp
+int* p = new int(10);  // stored in heap
+```
+
+👉 Memory stays even after function ends unless deleted.
 
 ---
 
 ### 2. `new` and `delete`
 
-**`new`** — Allocates memory on heap, returns pointer:
+#### 🧠 `new`
+- Allocates memory on heap
+- Returns pointer
+
 ```cpp
 int* p = new int(5);
 ```
 
-**`delete`** — Frees heap memory:
+#### 🧠 `delete`
+- Frees heap memory
+
 ```cpp
 delete p;
 ```
 
-**Arrays:**
+⚠️ **Arrays case:**
+
 ```cpp
 int* arr = new int[5];
-delete[] arr;  // IMPORTANT: use delete[] for arrays
+delete[] arr; // IMPORTANT
 ```
 
-> ⚠️ Using `delete` instead of `delete[]` for arrays = **undefined behavior**
+👉 Using `delete` instead of `delete[]` = **undefined behavior**
 
 ---
 
 ### 3. Memory Leak
 
-> **Memory leak** = used memory that is **never freed**.
-> Memory allocated but never released, even after it's no longer needed.
+#### 🧠 Definition
+Memory that is allocated but never freed.
 
 ```cpp
 void func() {
     int* p = new int(10);
-    // forgot delete → memory stays occupied even after function ends
+    // forgot delete
 }
 ```
+
+👉 Memory stays occupied even after function ends.
 
 **Why dangerous?**
 - Wastes memory
 - Can crash long-running programs
 - Common in large systems
 
+✅ **Fix:**
 ```cpp
-// Fix
 delete p;
 ```
 
-> 💡 **Interview Tip:** Mention "Use smart pointers like `unique_ptr` to avoid leaks"
+> 💡 **Interview Tip:**  
+> Mention: *"Use smart pointers like `unique_ptr` to avoid leaks"*
 
 ---
 
 ### 4. Dangling Pointer
 
+#### 🧠 Definition
+Pointer pointing to freed or invalid memory.
+
+❌ **Example:**
+
 ```cpp
-// ❌ Example 1 — accessing freed memory
 int* p = new int(10);
 delete p;
-cout << *p;  // dangling pointer
+cout << *p; // ❌ dangling pointer
+```
 
-// ❌ Example 2 — returning stack address
+❌ **Another Example:**
+
+```cpp
 int* func() {
     int x = 10;
-    return &x;  // pointing to stack memory, not heap
+    return &x;   // ❌ stack memory returned — pointing to stack memory not heap memory
 }
+```
 
-// ✅ Fix
+✅ **Fix:**
+
+```cpp
 delete p;
-p = nullptr;  // safe
+p = nullptr; // safe
 ```
 
 **Why dangerous?**
@@ -621,17 +673,21 @@ p = nullptr;  // safe
 
 ---
 
-## Rule of 3 / 5 / 0
+## Rule of 3 / 5
+
+---
 
 ### Rule of 3 (Classic C++)
 
-> If your class manages **dynamic memory (heap)**, you must define these **3**:
+#### 🧠 Idea
 
-1. **Destructor**
-2. **Copy Constructor**
-3. **Copy Assignment Operator**
+If your class manages dynamic memory (heap), you must define these **3**:
+- Destructor
+- Copy Constructor
+- Copy Assignment Operator
 
-**Why?** Default versions do shallow copy, causing:
+**Why?**  
+Because the default versions do shallow copy, which causes:
 - ❌ Double delete
 - ❌ Dangling pointers
 - ❌ Memory leaks
@@ -640,67 +696,94 @@ p = nullptr;  // safe
 
 ### Rule of 5 (Modern C++)
 
-> C++11 added **move semantics**, so now we have **5** functions:
+#### 🧠 Idea
 
-1. Destructor
-2. Copy Constructor
-3. Copy Assignment
-4. **Move Constructor**
-5. **Move Assignment**
+C++11 added move semantics, so now we have **5** functions:
+- Destructor
+- Copy Constructor
+- Copy Assignment
+- Move Constructor
+- Move Assignment
 
-> 💡 Move semantics avoid unnecessary copying and improve performance — "steal" the resource instead of duplicating it.
+**Why Move?**  
+To avoid unnecessary copying and improve performance.
+
+**Move Concept (Simple Idea):**  
+Instead of copying memory:  
+👉 **"Steal" the resource**
 
 ---
 
-### Rule of 0 (Advanced)
+### Interview Insight ⭐ (Very Important)
 
-> **Avoid manual memory management entirely.** Use:
-> - `std::vector`
-> - `std::string`
-> - Smart pointers
->
-> Then you don't need Rule of 3 or 5 at all.
+👉 If you define any one of these → you likely need all others  
+👉 But in modern C++: **Prefer Rule of 0**
 
-> ⭐ **Interview Insight:** If you define **any one** of these → you likely need all others. But in modern C++: **Prefer Rule of 0**.
+---
+
+### Rule of 0 (Advanced Insight)
+
+#### 🧠 Idea
+
+Avoid manual memory management entirely.
+
+Use:
+- `std::vector`
+- `std::string`
+- Smart pointers
+
+👉 Then you don't need Rule of 3 or 5 at all.
 
 ---
 
 ## Smart Pointers
 
-> A **smart pointer** is a class that wraps a raw pointer and **automatically manages the lifetime** of dynamically allocated memory.
+> A smart pointer is a class that wraps a raw pointer and automatically manages the lifetime of dynamically allocated memory.
 
-- Prevents **memory leaks** and **dangling pointers**
-- Defined in `<memory>` header: `#include <memory>`
+- It ensures proper resource deallocation by automatically releasing the memory when the pointer goes out of scope, thus preventing memory leaks and dangling pointers.
+- Smart pointers are defined in the `<memory>` header i.e. `#include<memory>`
 
-### Types
+### Types of Smart Pointers
 
-#### 1. `auto_ptr` *(Deprecated — removed in C++17)*
-- Early smart pointer that auto-deleted the managed object when out of scope
+---
+
+#### 1. `auto_ptr` *(Deprecated — removed after C++17)*
+
+`auto_ptr` was an early smart pointer that automatically deleted the managed object when it went out of scope.
+
+---
 
 #### 2. `unique_ptr`
-- Stores **one pointer only** at a time
-- **Cannot be copied** — only ownership can be transferred using `move()`
+
+`unique_ptr` stores one pointer only at a time. We cannot copy `unique_ptr`, only transfer ownership of the object to another `unique_ptr` using the `move()` method.
+
+---
 
 #### 3. `shared_ptr`
-- Allows **multiple pointers** to share ownership of the same object
-- Uses **reference counting** to manage memory
-- Maintains reference counting ownership in cooperation with all copies of the `shared_ptr`
-- Object is destroyed **only when all copies** of the `shared_ptr` are destroyed
+
+`shared_ptr` allows multiple pointers to share ownership of the same object. It uses **reference counting** to manage memory.
+
+- It maintains reference counting ownership of its contained pointer in cooperation with all copies of the `shared_ptr`.
+- An object referenced by the contained raw pointer will be destroyed when and only when **all copies** of the `shared_ptr` have been destroyed.
+
+---
 
 #### 4. `weak_ptr`
-- **Non-owning** smart pointer used with `shared_ptr` to prevent circular dependencies
-- Does **not** increase reference count
+
+`weak_ptr` is a non-owning smart pointer used with `shared_ptr` to prevent circular dependencies.
+
+**Key Characteristics:**
+- Does not increase reference count
+- Prevents circular dependency
 - Must be converted using `lock()` before use
 
 ---
 
 ### Problems with Normal Pointers
 
-| Problem | Description |
-|---------|-------------|
-| **Memory Leaks** | Memory repeatedly allocated but never freed → excessive memory consumption → system crash |
-| **Wild Pointers** | A pointer never initialized with a valid object or address |
-| **Dangling Pointers** | A pointer referring to memory that was deallocated earlier |
+- **Memory Leaks:** This occurs when memory is repeatedly allocated by a program but never freed. This leads to excessive memory consumption and eventually leads to a system crash.
+- **Wild Pointers:** A pointer that never be initialize with valid object or address called wild pointer.
+- **Dangling Pointers:** Assume there is a pointer that refers to memory which was deallocated earlier in the program, that pointer is called a dangling pointer.
 
 ---
 
@@ -708,91 +791,128 @@ p = nullptr;  // safe
 
 | Pointer | Smart Pointer |
 |---------|---------------|
-| A variable that maintains a memory address and data type info | A class that wraps a pointer (scoped pointer) |
-| Not destroyed when it goes out of scope | Destroys itself when it goes out of scope |
+| A pointer is a variable that maintains a memory address as well as data type information about that memory location. | Smart pointers, in simple words, are classes that wrap a pointer, or scoped pointers. |
+| A pointer is a variable that points to something in memory. | |
+| It is not destroyed in any form when it goes out of its scope | It destroys itself when it goes out of its scope |
 
 ---
 
 ## Move Semantics
 
-### Why Move Semantics?
+---
 
-| Era | Behavior |
-|-----|----------|
-| Before C++11 | Objects were copied — copying large objects = slow + extra memory |
-| After C++11 | Resources can be **moved** instead of copied — transfer ownership |
+### 1. What is Move Semantics (Idea)
 
-> 🔥 **Analogy:**
-> - **Copy** → photocopy a book 📚 (expensive)
-> - **Move** → hand over the book (cheap)
+**Before C++11:**
+- Objects were copied
+- Copying large objects = slow + extra memory
 
-### Move Concept (Simple Idea)
-> Instead of copying memory → **"Steal" the resource**
+**After C++11:**
+- We can move resources instead of copying
+- That means: 👉 Transfer ownership instead of duplicating data
+
+🔥 **Real-life analogy**
+
+- Copy → photocopy a book 📚 (expensive)
+- Move → hand over the book (cheap)
 
 ---
 
-### lvalue vs rvalue
+### 2. lvalue vs rvalue (Very Important)
 
-| Type | Description | Example |
-|------|-------------|---------|
-| **lvalue** | Has a name, exists in memory | `int x = 10;` — `x` is lvalue |
-| **rvalue** | Temporary value, no name | `10 + 20` is rvalue |
-
----
-
-### rvalue Reference (`&&`)
+✅ **lvalue**
+- Has a name
+- Exists in memory
 
 ```cpp
-int &x = 10;    // ❌ ERROR
-int &&r = 10;   // ✅ rvalue reference
+int x = 10; // x is lvalue
 ```
 
-> 👉 It can bind to **temporary objects (rvalues)**
+✅ **rvalue**
+- Temporary value
+- No name
 
-| Reference | Binds to |
-|-----------|----------|
+```cpp
+int x = 10 + 20; // (10+20) is rvalue
+```
+
+---
+
+### 3. rvalue Reference `(&&)`
+
+> This is the **backbone** of move semantics.
+
+```cpp
+int &x = 10;   // ❌ ERROR
+int &&r = 10;  // rvalue reference
+```
+
+👉 It can bind to temporary objects (rvalues)
+
+❗ **Key Rule**
+
+| Type | Binds to |
+|------|---------|
 | `int&` | lvalues only |
 | `int&&` | rvalues only |
 
 **Real Use Case:**
+
 ```cpp
 void process(int &&x) {
     cout << "rvalue received\n";
 }
 
-process(10);  // calls this (rvalue)
+process(10); // calls this (rvalue)
 ```
 
-**Compare with lvalue version:**
+**Compare with:**
+
 ```cpp
 void process(int &x) {
     cout << "lvalue received\n";
 }
 
 int a = 5;
-process(a);  // lvalue version
+process(a); // lvalue version
 ```
 
 ---
 
-### Why Move is Needed
+### 4. Why Move is Needed
+
+**Example without move:**
 
 ```cpp
-// Without move — full duplication (expensive)
 vector<int> v1 = {1,2,3,4,5};
-vector<int> v2 = v1;  // COPY
-
-// With move — internal data transferred (cheap)
-vector<int> v2 = move(v1);  // MOVE
+vector<int> v2 = v1; // COPY (expensive)
 ```
+
+👉 Full duplication happens
+
+**With move:**
+
+```cpp
+vector<int> v2 = move(v1); // MOVE
+```
+
+👉 Internal data (heap memory) is transferred, not copied
 
 ---
 
-### `std::move`
+### 5. `std::move`
 
-> `std::move(x)` converts an **lvalue into rvalue**.
+```cpp
+std::move(x)
+```
 
-> ⚠️ **Important:** It does **NOT** move anything by itself — it just **enables** the move.
+👉 Converts an lvalue into rvalue
+
+⚠️ **Important:**
+- It does NOT move anything by itself
+- It just enables move
+
+**Example:**
 
 ```cpp
 #include <iostream>
@@ -802,13 +922,18 @@ using namespace std;
 int main() {
     vector<int> v1 = {1,2,3};
     vector<int> v2 = std::move(v1);
-    cout << v1.size();  // usually 0 (moved-from state)
+    cout << v1.size(); // usually 0 (moved-from state)
 }
 ```
 
 ---
 
-### Move Constructor
+### 6. Move Constructor
+
+> Without move constructor → copy happens  
+> With move constructor → efficient transfer
+
+**Example:**
 
 ```cpp
 class Demo {
@@ -821,8 +946,8 @@ public:
 
     // Move Constructor
     Demo(Demo&& other) {
-        data = other.data;      // transfer pointer
-        other.data = nullptr;   // avoid double delete
+        data = other.data;    // transfer pointer
+        other.data = nullptr; // avoid double delete
     }
 
     ~Demo() {
@@ -831,11 +956,13 @@ public:
 };
 ```
 
-> Ownership of memory is **transferred** — old object becomes **empty / safe state**.
+🔥 **What happens here:**
+- Ownership of memory is transferred
+- Old object becomes empty / safe state
 
 ---
 
-### Move Assignment Operator
+### 7. Move Assignment Operator
 
 ```cpp
 Demo& operator=(Demo&& other) {
@@ -851,16 +978,19 @@ Demo& operator=(Demo&& other) {
 
 ---
 
-### When Move Happens Automatically
+### 8. When Move Happens Automatically
 
+Move is used when:
 - Returning objects from functions
 - Using `std::move`
 - Temporary objects
 
+**Example:**
+
 ```cpp
 Demo create() {
     Demo d(10);
-    return d;  // move happens
+    return d; // move happens
 }
 ```
 
@@ -868,48 +998,57 @@ Demo create() {
 
 ## Templates (Generic Programming)
 
-> **Generic programming** is a way of writing code that works with **any data type**, instead of being limited to one specific type.
+> Generic programming is a way of writing code so it works with any data type, instead of being limited to one specific type.
 
-### Problem Without Templates
+### 🔹 What problem do templates solve?
+
+Without templates, you'd write the same logic again and again:
 
 ```cpp
 int add(int a, int b);
 double add(double a, double b);
-// Repetition ❌
 ```
 
-### Template Solution
+👉 Repetition ❌
+
+### 🔹 Template Solution
 
 ```cpp
 template <typename T>
 T add(T a, T b) {
     return a + b;
 }
+```
 
-// Usage
+**Usage:**
+
+```cpp
 cout << add(2, 3);       // int
 cout << add(2.5, 3.1);   // double
 ```
 
-> 💡 **Key Idea:** Write code **once**, use with **any data type**.
+### 🔹 Key Idea
+
+👉 Write code once, use with any data type
 
 ---
 
 ## Exception Handling
 
-### Why Needed?
-- To handle **runtime errors** safely
-- Without it → program **crashes** ❌
+### 🔹 Why needed?
 
-### Basic Keywords
+- To handle runtime errors safely
+- Without it → program crashes ❌
+
+### 🔹 Basic Keywords
 
 | Keyword | Purpose |
 |---------|---------|
-| `try` | Code that may cause an error |
-| `throw` | Raise the error |
-| `catch` | Handle the error |
+| `try` | code that may cause error |
+| `throw` | raise error |
+| `catch` | handle error |
 
-### Basic Example
+**Example:**
 
 ```cpp
 #include <iostream>
@@ -930,12 +1069,10 @@ int main() {
 }
 ```
 
-**Flow:**
-1. `try` block runs
-2. Error occurs → `throw`
-3. Control jumps to `catch`
-
----
+**How it works:**
+- `try` block runs
+- Error occurs → `throw`
+- Control jumps to `catch`
 
 ### Custom Exception (OOP + Exception)
 
@@ -954,7 +1091,3 @@ catch (MyException e) {
     e.message();
 }
 ```
-
----
-
-*End of Notes*
