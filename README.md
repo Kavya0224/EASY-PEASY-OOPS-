@@ -381,7 +381,7 @@ For example, we can make use of the addition operator `(+)` for string to concat
 
 > Deleting a derived class object using a pointer of base class type that has a non-virtual destructor results in undefined behavior. To correct this situation, the base class should be defined with a virtual destructor.
 
-👉 A virtual destructor does **NOT** call the derived constructor.  
+👉 A virtual destructor does **NOT** call the derived destructor.  
 It ensures the derived destructor is called when deleting through a base pointer.
 
 ## Pure Virtual Function
